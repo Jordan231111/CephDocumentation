@@ -1,0 +1,57 @@
+Who is doing what for the project?
+
+Link your project branch here:
+https://github.com/Acewvrs/ceph/tree/project3
+
+
+To test your code after making changes:
+If you're running a test cluster (executed ../src/vstart.sh), terminate it 
+Run ninja again
+Restart your test cluster and run the commands again
+
+Overview of the code:
+    https://github.com/Acewvrs/ceph/blob/900fb5083740b52fc19cb09ed0110b216ca59a78/src/mvon/MgrMonitor.cc#L1022C8-L1030C28
+        
+    Line 1022: accesses the enabled module stored as an array and store them in map.modules
+        
+    Line 1023-1029: 
+        iterates through each module; in each loop:
+
+        map.get_always_on_modules().count(p) > 0 checks to see if module 'p' is an "always on" module; we skip printing module info in this case
+        
+        f->dump_string("module", p) prints the module p and its attributes in formatted texts
+        
+Brainstorming:
+Replace line 1028 with p.dump(f.get()), where p is the moduleinfo (MgrMap::ModuleInfo)
+The condition that is "always on" currently continues; maybe make a separate dump_string based on disabled output to iterate through modules and output their details using a similar approach 
+need to extend data structure used for enabled and always-on modules to include additional information like health, description, version, etc. 
+set module = map.available_modules.at(p) (value in the loop to get values rather than just continue?)
+module.dump(f.get());
+loop through the always_on_modules and then if it is not the end of the loop, use a pointer it->second.dump Will test it->second.dump(&f) and it->second.dump(f.get())
+Store MgrMap::ModuleInfo somewhere, loop through & filter out always_enabled, enabled, and disabled modules
+
+
+Notes:
+    p.dump is defined here:
+    https://github.com/Acewvrs/ceph/blob/7e3f09e6651db50de5d5eb43c76071534d0617b9/src/mon/MgrMap.h#L555C3-L555C38
+    
+    Difference between p.dump(f.get()) and f->dump_string("module", p)
+
+    
+Questions:
+It seems like we want our output to look like the one from p.dump(f.get()). Can we directly change the dump_string() to make it print full details? Or should we stick with p.dump()?
+Should we make a separate dump() for the always - on 
+currently confused on the datastructure of f is it a direct instance or a smart pointer? 
+I Found out it seems to be a scoped ptr from the boost library so f.get seems to be needed for all the code after boost::scoped_ptr that declares f
+
+
+
+
+Completion:
+I recommend people to come up with better solution or maybe optimize my solution as needed
+A possible solution I came up with and pushed on branch https://github.com/Acewvrs/ceph/tree/project3 via https://github.com/Acewvrs/ceph/tree/5ae095d8ac90880cd8447a54f07fc1902d0bb9de
+
+
+
+
+
