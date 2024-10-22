@@ -14,8 +14,7 @@
     ```
     - **Summary:** The `strncpy()` function is raising a warning due to the specified bound being exactly equal to the destination size (16), which can lead to truncation.
     - **Result:** The build was stopped due to this issue: `ninja: build stopped: subcommand failed.`
-
-
+    - **Suspected Cause:** I suspect it is due to the unordered map "optimization" we attempted to do, so we will need to revert that next time.
 
 ## **10-12-24**
 
