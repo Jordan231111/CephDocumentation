@@ -1,6 +1,22 @@
 
 ---
 
+## **10-22-24**
+
+### **Latest Issues**
+
+- **Build Failure:**
+  - Encountered a build failure with the following error:
+    ```
+    strncpy(m_thread_name, Thread::get_thread_name().data(), 16);
+    warning: ‘char* strncpy(char*, const char*, size_t)’ specified bound 16 equals destination size [-Wstringop-truncation]
+    In constructor ‘ceph::logging::Entry::Entry(short int, short int)’, inlined from ‘ceph::logging::MutableEntry::MutableEntry(short int, short int)’ at /home/yejordan/ceph/src/log/Entry.h:64:52, inlined from ‘void Monitor::probe_timeout(int)’ at /home/yejordan/ceph/src/mon/Monitor.cc:1884:3: /home/yejordan/ceph/src/log/Entry.h:35:12:
+    ```
+    - **Summary:** The `strncpy()` function is raising a warning due to the specified bound being exactly equal to the destination size (16), which can lead to truncation.
+    - **Result:** The build was stopped due to this issue: `ninja: build stopped: subcommand failed.`
+
+
+
 ## **10-12-24**
 
 ### **Fixed Issues**
@@ -77,5 +93,35 @@ git reset --hard <Jun's fork>/<project branch name>
 git fetch <Jun's fork>
 git pull <Jun's fork> <branch name> --rebase
 ```
+
+
+
+---
+
+## **General Troubleshooting**
+
+### **How to Fix All at Once**
+
+1. **Reset the Repository and Submodules:**
+
+   ```bash
+   git reset --hard HEAD
+   git submodule foreach --recursive git reset --hard
+   ```
+
+2. **Clean Untracked Files:**
+   To clean any untracked files or directories (be cautious, as this will delete them):
+
+   ```bash
+   git clean -fdx
+   git submodule foreach --recursive git clean -fdx
+   ```
+
+3. **Update Submodules:**
+   Finally, ensure all submodules are correctly updated:
+
+   ```bash
+   git submodule update --init --recursive
+   ```
 
 ---
