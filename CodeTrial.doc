@@ -29,7 +29,6 @@ set module = map.available_modules.at(p) (value in the loop to get values rather
 module.dump(f.get());
 loop through the always_on_modules and then if it is not the end of the loop, use a pointer it->second.dump Will test it->second.dump(&f) and it->second.dump(f.get())
 Store MgrMap::ModuleInfo somewhere, loop through & filter out always_enabled, enabled, and disabled modules
-need to check for detail parameter -> then show more detailed info
 
 
 Notes:
@@ -40,16 +39,8 @@ Notes:
 p.dump(f.get()) to dump all the info.
 
 Latest changes failed to build on my end:
-ar*, size_t)’ specified bound 16 equals destination size [-Wstringop-truncation]
-   35 |     strncpy(m_thread_name, Thread::get_thread_name().data(), 16);
-      |     ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In constructor ‘ceph::logging::Entry::Entry(short int, short int)’,
-    inlined from ‘ceph::logging::MutableEntry::MutableEntry(short int, short int)’ at /home/yejordan/ceph/src/log/Entry.h:64:52,
-    inlined from ‘void Monitor::probe_timeout(int)’ at /home/yejordan/ceph/src/mon/Monitor.cc:1884:3:
-/home/yejordan/ceph/src/log/Entry.h:35:12: warning: ‘char* strncpy(char*, const char*, size_t)’ specified bound 16 equals destination size [-Wstringop-truncation]
-   35 |     strncpy(m_thread_name, Thread::get_thread_name().data(), 16);
-      |     ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-ninja: build stopped: subcommand failed.
+https://pastebin.com/49MPU6DD
+
 
 
 
@@ -60,11 +51,17 @@ Should we make a separate dump() for the always - on
 currently confused on the datastructure of f is it a direct instance or a smart pointer? 
 I Found out it seems to be a scoped ptr from the boost library so f.get seems to be needed for all the code after boost::scoped_ptr that declares f
 
+   Im also quite confused about the recent implementation we made from changing the map to unordered_map because of Order of Elements: std::map maintains 
+   elements in a sorted order based on keys, while std::unordered_map does not maintain any order. Also not sure if we have a custom hashmap for our
+   ModuleName type (which I assume is why the build fails). 
+
+
 
 Completion:
 I recommend people to come up with better solution or maybe optimize my solution as needed
 A possible solution I came up with and pushed on branch https://github.com/Acewvrs/ceph/tree/project3 via https://github.com/Acewvrs/ceph/tree/5ae095d8ac90880cd8447a54f07fc1902d0bb9de
-10-22-24 Currently testing the most recent changes and will paste the output into a github repo here: 
+The output to the solution and commit above is located here: https://raw.githubusercontent.com/Jordan231111/CephDocumentation/refs/heads/main/output/MgrMonitor.txt
+
 
 
 
