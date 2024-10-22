@@ -100,7 +100,8 @@ git pull <Jun's fork> <branch name> --rebase
 
 ## **General Troubleshooting**
 
-### **How to Fix All at Once**
+### **How to Fix All at Once: resetting all changes and syncing your local environment with the remote branch and submodules**
+> **Warning:** <span style="color:red">This process will remove all your changes (committed, uncommitted, staged, unstaged, etc.). Make sure to back up any important work before proceeding.</span>
 
 1. **Reset the Repository and Submodules:**
 
@@ -108,6 +109,7 @@ git pull <Jun's fork> <branch name> --rebase
    git reset --hard HEAD
    git submodule foreach --recursive git reset --hard
    ```
+
 
 2. **Clean Untracked Files:**
    To clean any untracked files or directories (be cautious, as this will delete them):
@@ -118,10 +120,18 @@ git pull <Jun's fork> <branch name> --rebase
    ```
 
 3. **Update Submodules:**
-   Finally, ensure all submodules are correctly updated:
+   Ensure all submodules are correctly updated:
 
    ```bash
    git submodule update --init --recursive
+   ```
+
+4. **Fetch and Pull the Latest:**
+   Finally, ensure all remote changes are in sync with your local repository:
+
+   ```bash
+   git fetch <Jun's fork>
+   git pull <Jun's fork> <branch name> --rebase
    ```
 
 ---
