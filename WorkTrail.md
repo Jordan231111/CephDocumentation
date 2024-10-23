@@ -18,6 +18,7 @@
    - [Configuring Git User Information](#configuring-git-user-information)
    - [Signing Off Commits](#signing-off-commits)
    - [Commit Message Guidelines](#commit-message-guidelines)
+     - [Example Commit Message](#example-commit-message)
    - [After Rewriting History (Rebasing)](#after-rewriting-history-rebasing)
    - [Otherwise](#otherwise)
 7. [General Troubleshooting](#general-troubleshooting)
@@ -316,6 +317,35 @@ Carefully read the [SubmittingPatches.rst](https://github.com/ceph/ceph/blob/mai
 - Crafting informative commit messages.
 - Following best practices when committing and creating pull requests.
 - Understanding the project's contribution workflow.
+
+#### Example Commit Message
+
+Below is an example of a well-formatted commit message:
+
+```
+mon: Fix memory leak in database connection pool
+
+This fixes a memory leak issue that occurred when the connection pool
+was not properly releasing resources. The bug was traced to the
+DatabaseConnectionPool class where connections were held indefinitely.
+
+- Added proper connection closing logic in the `closeConnection` method.
+- Fixed unit tests to handle the new connection closing behavior.
+
+Fixes: http://tracker.ceph.com/issues/12345
+Signed-off-by: Jordan Ye <yejordan8888@gmail.com>
+Co-authored-by: Another Developer <anotherdev@example.com>
+```
+
+This commit message follows best practices by:
+
+- **Providing a concise and descriptive title.**
+- **Including a detailed description** of the changes and the problem being solved.
+- **Listing specific changes made** in bullet points.
+- **Linking to the issue being fixed**, e.g., `Fixes #789`.
+- **Including sign-off and co-author information** for proper attribution.
+
+---
 
 ### After Rewriting History (Rebasing)
 
