@@ -62,9 +62,103 @@ Welcome to the project documentation. This guide provides comprehensive informat
 - **Suspected Cause:**
   The issue is believed to stem from recent optimizations made to the unordered map. It may require reverting the optimization to resolve the build failure.
 
-- **Recommended Action:**
+- **Possible Solution:**
   - Review recent changes related to unordered map optimizations.
   - Consider reverting the optimization to identify if it resolves the build issue.
+
+---
+
+- **Issue Description:**
+  During the build process, a failure was encountered with the following error message:
+
+  ```cpp
+  [27/454] Building CXX object src/mon/CMakeFiles/mon.dir/MgrMonitor.cc.o
+  FAILED: src/mon/CMakeFiles/mon.dir/MgrMonitor.cc.o
+  ccache /usr/bin/g++-11 -DBOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION -DBOOST_ASIO_HAS_IO_URING -DBOOST_ASIO_NO_TS_EXECUTORS -DHAVE_CONFIG_H -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -D_REENTRANT -D_THREAD_SAFE -D__CEPH__ -D__STDC_FORMAT_MACROS -D__linux__ -I/home/yejordan/ceph/build/src/include -I/home/yejordan/ceph/src -isystem /home/yejordan/ceph/build/boost/include -isystem /home/yejordan/ceph/build/include -isystem /home/yejordan/ceph/src/jaegertracing/opentelemetry-cpp/api/include -isystem /home/yejordan/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include -isystem /home/yejordan/ceph/src/jaegertracing/opentelemetry-cpp/ext/include -isystem /home/yejordan/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include -isystem /home/yejordan/ceph/src/xxHash -isystem /home/yejordan/ceph/src/fmt/include -isystem /home/yejordan/ceph/src/rocksdb/include -isystem /home/yejordan/ceph/build/src/liburing/src/include -O2 -g -DNDEBUG -fPIC -U_FORTIFY_SOURCE -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -Wall -fno-strict-aliasing -fsigned-char -Wtype-limits -Wignored-qualifiers -Wpointer-arith -Werror=format-security -Winit-self -Wno-unknown-pragmas -Wnon-virtual-dtor -Wno-ignored-qualifiers -ftemplate-depth-1024 -Wpessimizing-move -Wredundant-move -Wstrict-null-sentinel -Woverloaded-virtual -fstack-protector-strong -fdiagnostics-color=auto -std=c++20 -MD -MT src/mon/CMakeFiles/mon.dir/MgrMonitor.cc.o -MF src/mon/CMakeFiles/mon.dir/MgrMonitor.cc.o.d -o src/mon/CMakeFiles/mon.dir/MgrMonitor.cc.o -c /home/yejordan/ceph/src/mon/MgrMonitor.cc
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc: In member function ‘bool MgrMonitor::preprocess_command(MonOpRequestRef)’:
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1037:18: warning: variable ‘it’ set but not used [-Wunused-but-set-variable]
+  1037 | auto it = module_info_map.find(module_name);
+       |                  ^~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1036:11: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  1036 | if (map.get_always_on_modules().count(module_name) == 0)
+       |           ^~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1038:13: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  1038 | if (it != module_info_map.end()) {
+       |             ^~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1038:17: error: ‘it’ was not declared in this scope; did you mean ‘int’?
+  1038 | if (it != module_info_map.end()) {
+       |                 ^~
+       |                 int
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1005:14: error: label ‘reply’ used but not defined
+  1005 | goto reply;
+       |              ^~~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc: At global scope:
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1057:7: error: expected unqualified-id before ‘else’
+  1057 | } else {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1084:3: error: expected declaration before ‘}’ token
+  1084 | } else if (prefix == "mgr services") {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1084:5: error: expected unqualified-id before ‘else’
+  1084 | } else if (prefix == "mgr services") {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1094:5: error: expected unqualified-id before ‘else’
+  1094 | } else if (prefix == "mgr metadata") {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1123:5: error: expected unqualified-id before ‘else’
+  1123 | } else if (prefix == "mgr versions") {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1130:5: error: expected unqualified-id before ‘else’
+  1130 | } else if (prefix == "mgr count-metadata") {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1139:5: error: expected unqualified-id before ‘else’
+  1139 | } else {
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1143:6: error: found ‘:’ in nested-name-specifier, expected ‘::’
+  1143 | reply:
+       |       ^~
+       |       ::
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1143:1: error: ‘reply’ does not name a type
+  1143 | reply:
+       |       ^~~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1145:10: error: expected constructor, destructor, or type conversion before ‘(’ token
+  1145 | getline(ss, rs);
+       |          ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1146:3: error: ‘mon’ does not name a type
+  1146 | mon.reply_command(op, r, rs, rdata, get_last_committed());
+       |       ^~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1147:3: error: expected unqualified-id before ‘return’
+  1147 | return true;
+       |       ^~~~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1148:1: error: expected declaration before ‘}’ token
+  1148 | }
+       |       ^~~~
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc: In member function ‘bool MgrMonitor::preprocess_command(MonOpRequestRef)’:
+  /home/yejordan/ceph/src/mon/MgrMonitor.cc:1057:5: warning: control reaches end of non-void function [-Wreturn-type]
+  1057 | } else {
+       |       ^~~~
+  [34/454] Building CXX object src/mon/CMakeFiles/mon.dir/ConfigMonitor.cc.o
+  ninja: build stopped: subcommand failed.
+  ```
+
+- **Summary:**
+  The build process failed due to multiple errors and warnings in the `MgrMonitor.cc` file. These include unused variables, misleading indentation, undeclared variables, and syntax errors.
+
+- **Impact:**
+  The build process was halted due to these errors, resulting in the following message:
+
+  ```
+  ninja: build stopped: subcommand failed.
+  ```
+
+- **Suspected Cause:**
+  The issue is likely due to recent changes in the `MgrMonitor.cc` file that introduced syntax errors and logical issues.
+
+- **Possible Solution:**
+  - Review the recent changes made to the `MgrMonitor.cc` file.
+  - Correct the syntax errors and ensure proper variable declarations.
+  - Fix the misleading indentation and ensure all labels and variables are properly defined.
+  - Rebuild the project to verify if the issues are resolved.
 
 ---
 
