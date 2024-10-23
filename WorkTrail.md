@@ -132,7 +132,7 @@ sudo apt install ccache
 Configure the CMake build system to utilize `ccache` for both C and C++ compilers.
 
 ```bash
-./do_cmake.sh \
+sudo ./do_cmake.sh \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DCMAKE_C_COMPILER_LAUNCHER=ccache \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -150,7 +150,7 @@ Ensure you are in the build directory before initiating the build process.
 
 ```bash
 cd build
-ninja vstart-base cephfs cython_cephfs cython_rbd
+sudo ninja vstart-base cephfs cython_cephfs cython_rbd
 ```
 
 **Notes:**
@@ -163,7 +163,7 @@ ninja vstart-base cephfs cython_cephfs cython_rbd
 Initialize and start the test cluster with the following command:
 
 ```bash
-../src/vstart.sh --debug --new -x --localhost --bluestore --without-dashboard
+sudo ../src/vstart.sh --debug --new -x --localhost --bluestore --without-dashboard
 ```
 
 **Parameters Explained:**
@@ -180,7 +180,7 @@ Initialize and start the test cluster with the following command:
 Check the status of the Ceph cluster to ensure everything is set up correctly.
 
 ```bash
-./bin/ceph -s
+sudo ./bin/ceph -s
 ```
 
 **Expected Output:**
