@@ -4,6 +4,7 @@
 
 1. [Introduction](#introduction)
 2. [Latest Updates](#latest-updates)
+   - [Latest Updates (11-1-24)](#latest-updates-11-1-24)
    - [Latest Issues (10-22-24)](#latest-issues-10-22-24)
 3. [Fixed Issues](#fixed-issues)
    - [Fixed Issues (10-12-24)](#fixed-issues-10-12-24)
@@ -36,6 +37,38 @@ Welcome to the project documentation. This guide provides comprehensive informat
 ---
 
 ## Latest Updates
+
+### Latest Updates (11-1-24)
+
+#### **Resolving Merge Conflicts**
+
+- **What I Learned:**
+  During a recent pull request, I encountered merge conflicts between the `Project3` and `Main` branches. The GitHub bot automatically labeled the pull request with "need-rebase" due to these conflicts. I can also click on details in each of the github Checks to view the failed checks more in depth. 
+
+- **Approach:**
+  To successfully resolve the conflicts, I retained the `<<<<<<< HEAD` sections to preserve the main branch's changes while carefully integrating my own modifications. This ensured that both sets of changes were harmoniously combined.
+
+- **Steps Taken:**
+  - **Reviewed Conflict Markers:**
+    - Examined each conflict marker (`<<<<<<<`, `=======`, `>>>>>>>`) to determine the appropriate changes to keep.
+  - **Preserved Critical Sections:**
+    - Maintained essential parts of the `HEAD` to ensure the main branch's integrity.
+    - Integrated personal work without overwriting important updates from the main branch.
+  - **Executed Git Commands:**
+    ```bash
+    git fetch main
+    git pull origin main --rebase
+    ```
+  - **Verified Merged Code:**
+    - Checked the merged code for consistency and functionality to ensure the merge was successful.
+
+- **Expected Outcome:**
+  Successfully resolve all merge conflicts, resulting in a clean and functional codebase. This allowed the merge request to be completed without delays, enabling continued development without interruptions.
+
+- **Reflection:**
+  This experience enhanced my understanding of effective conflict resolution strategies in Git. It underscored the importance of carefully managing and integrating changes from multiple sources to maintain code integrity.
+
+
 
 ### Latest Issues (10-22-24)
 
