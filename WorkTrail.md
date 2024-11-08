@@ -1,12 +1,14 @@
-# **Project Documentation For Ceph**
+# **Project Documentation for Ceph**
 
 ## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Latest Updates](#latest-updates)
+   - [Latest Updates (11-8-24)](#latest-updates-11-8-24)
    - [Latest Updates (11-1-24)](#latest-updates-11-1-24)
    - [Latest Issues (10-22-24)](#latest-issues-10-22-24)
 3. [Fixed Issues](#fixed-issues)
+   - [Fixed Issues (11-8-24)](#fixed-issues-11-8-24)
    - [Fixed Issues (10-12-24)](#fixed-issues-10-12-24)
 4. [Pending Tasks](#pending-tasks)
 5. [Setup Instructions](#setup-instructions)
@@ -16,6 +18,7 @@
    - [4. Set Up the Test Cluster](#4-set-up-the-test-cluster)
    - [5. Verify the Setup](#5-verify-the-setup)
 6. [Collaboration Guidelines](#collaboration-guidelines)
+   - [Working with the Ceph Issue Tracker](#working-with-the-ceph-issue-tracker)
    - [Configuring Git User Information](#configuring-git-user-information)
    - [Signing Off Commits](#signing-off-commits)
    - [Commit Message Guidelines](#commit-message-guidelines)
@@ -32,18 +35,65 @@
 
 ## Introduction
 
-Welcome to the project documentation. This guide provides comprehensive information on the latest issues, fixes, setup instructions, collaboration guidelines, and troubleshooting steps to help you navigate and contribute effectively to the project.
+Welcome to the project documentation for contributing to Ceph. This guide provides comprehensive information on the latest updates, fixed issues, setup instructions, collaboration guidelines, and troubleshooting steps to help you navigate and contribute effectively to the project.
 
 ---
 
 ## Latest Updates
+
+### Latest Updates (11-8-24)
+
+#### **Understanding and Working with the Ceph Issue Tracker**
+
+- **Learning to Navigate the Issue Tracker:**
+  - Explored the Ceph issue tracker to understand how issues are managed and tracked.
+  - Example issue: [Issue #42593](https://tracker.ceph.com/issues/42593).
+
+- **Best Practices for Issue Management:**
+  - **Assigning Issues:**
+    - It's best practice to assign an issue to yourself when you start working on it.
+    - Set the issue status to "In Progress" to indicate that it's being actively worked on.
+  - **Updating Issue Status:**
+    - After creating a Pull Request (PR), update the issue status to "Under Review".
+  - **Choosing Issues:**
+    - Started with "low-hanging fruit" issues to get accustomed to fixing simple to moderately difficult problems.
+    - This approach helps in understanding professional open-source development workflows and best practices.
+
+- **Key Learnings from the Developer Guide:**
+  - **Developer Guide Reference:**
+    - Many insights were gained from the [Ceph Developer Guide - Basic Workflow](https://docs.ceph.com/en/reef/dev/developer_guide/basic-workflow/).
+    - Highly recommend others working on the project to pay special attention to this page.
+
+- **Finding the Right File to Edit:**
+  - **Initial Challenge:**
+    - As a newcomer to Ceph, locating the correct file to edit was challenging due to the lack of specific leads in the issue description.
+  - **Solution Approach:**
+    - Employed a brute-force method using the search function in Visual Studio Code (VSCode).
+    - Found four occurrences related to the issue and identified the correct file needing modification.
+    - In this case, the task was to set a configuration option to `true` by default.
+
+- **Creating a Pull Request:**
+  - **Following Guidelines:**
+    - Created a PR adhering to the guidelines outlined in the [Submitting Patches](https://github.com/ceph/ceph/blob/main/SubmittingPatches.rst) document.
+    - PR link: [PR #60678](https://github.com/ceph/ceph/pull/60678).
+  - **Reviewer Selection:**
+    - For issues similar to the one addressed, it's advisable to assign an experienced developer, preferably someone familiar with the codebase, as a reviewer.
+    - For simple issues, this may not be necessary, but adapting to different scenarios is crucial.
+    - Don't hesitate to ask questions in large projects to ensure clarity.
+
+- **Commit Message and PR Format:**
+  - **Dependence on Context:**
+    - The commit message and PR format depend on the nature of the issue, the number of commits, and other specific scenarios.
+  - **Best Practices:**
+    - Gaining experience and seeking support when necessary helps in getting it right the first time.
+    - A well-crafted PR format facilitates the review process and contributes to efficient collaboration.
 
 ### Latest Updates (11-1-24)
 
 #### **Resolving Merge Conflicts**
 
 - **What I Learned:**
-  During a recent pull request, I encountered merge conflicts between the `Project3` and `Main` branches. The GitHub bot automatically labeled the pull request with "need-rebase" due to these conflicts. I can also click on details in each of the github Checks to view the failed checks more in depth. 
+  During a recent pull request, I encountered merge conflicts between the `Project3` and `Main` branches. The GitHub bot automatically labeled the pull request with "need-rebase" due to these conflicts. I can also click on details in each of the GitHub checks to view the failed checks more in-depth.
 
 - **Approach:**
   To successfully resolve the conflicts, I retained the `<<<<<<< HEAD` sections to preserve the main branch's changes while carefully integrating my own modifications. This ensured that both sets of changes were harmoniously combined.
@@ -67,8 +117,6 @@ Welcome to the project documentation. This guide provides comprehensive informat
 
 - **Reflection:**
   This experience enhanced my understanding of effective conflict resolution strategies in Git. It underscored the importance of carefully managing and integrating changes from multiple sources to maintain code integrity.
-
-
 
 ### Latest Issues (10-22-24)
 
@@ -198,6 +246,29 @@ Welcome to the project documentation. This guide provides comprehensive informat
 
 ## Fixed Issues
 
+### Fixed Issues (11-8-24)
+
+#### **Issue #42593: Remove `osd_op_complaint_time`**
+
+- **Issue Description:**
+  - The goal was to remove the `osd_op_complaint_time` configuration option and set it to `true` by default.
+
+- **Resolution:**
+  - **File Identification:**
+    - Utilized VSCode's search functionality to locate relevant occurrences.
+    - Identified the correct file to edit among four appearances.
+  - **Code Modification:**
+    - Edited the configuration option to set it to `true` by default.
+  - **Pull Request:**
+    - Submitted PR [#60678](https://github.com/ceph/ceph/pull/60678) following the project's contribution guidelines.
+    - Ensured the commit message and PR description adhered to best practices.
+
+- **Notes:**
+  - **Learning Experience:**
+    - The process enhanced understanding of navigating a large codebase and the importance of following contribution guidelines.
+  - **Collaboration:**
+    - Recognized the value of involving experienced developers as reviewers for certain issues.
+
 ### Fixed Issues (10-12-24)
 
 #### **Command Execution**
@@ -243,8 +314,6 @@ Welcome to the project documentation. This guide provides comprehensive informat
 ---
 
 ## Setup Instructions
-
-Follow the steps below to set up the development environment effectively.
 
 ### 1. Install `ccache` (If Needed)
 
@@ -319,7 +388,30 @@ sudo ./bin/ceph -s
 
 ## Collaboration Guidelines
 
-Effective collaboration is crucial for the success of the project. Follow the guidelines below to manage code changes and maintain a clean project history.
+### Working with the Ceph Issue Tracker
+
+- **Navigating the Tracker:**
+  - Access the Ceph issue tracker at [tracker.ceph.com](https://tracker.ceph.com).
+  - Use filters and search functionality to find issues relevant to your interests or expertise.
+
+- **Assigning Issues:**
+  - Before starting work, assign the issue to yourself to indicate ownership.
+  - Update the issue status to "In Progress" to reflect active development.
+
+- **Updating Issue Status:**
+  - After submitting a Pull Request, change the issue status to "Under Review".
+  - Provide a link to the PR in the issue comments for easy reference.
+
+- **Choosing Appropriate Issues:**
+  - Start with "low-hanging fruit" or beginner-friendly issues to familiarize yourself with the codebase and contribution process.
+  - As you gain experience, take on more complex issues.
+
+- **Communication and Collaboration:**
+  - For complex issues, consider reaching out to experienced developers for guidance.
+  - Assign appropriate reviewers to your PRs, especially those familiar with the code or module you're modifying.
+
+- **Additional Resources:**
+  - Refer to the [Ceph Developer Guide - Basic Workflow](https://docs.ceph.com/en/reef/dev/developer_guide/basic-workflow/) for detailed instructions on the development process.
 
 ### Configuring Git User Information
 
@@ -345,7 +437,7 @@ git commit -s
 
 ### Commit Message Guidelines
 
-Carefully read the [SubmittingPatches.rst](https://github.com/ceph/ceph/blob/main/SubmittingPatches.rst) document for detailed guidelines on:
+Carefully read the [Submitting Patches](https://github.com/ceph/ceph/blob/main/SubmittingPatches.rst) document for detailed guidelines on:
 
 - Crafting informative commit messages.
 - Following best practices when committing and creating pull requests.
@@ -493,6 +585,10 @@ git pull <jun-fork> <branch-name> --rebase
 ### Glossary
 
 - **Ceph:** A scalable, high-performance distributed storage system.
+- **VSCode:** Visual Studio Code, a popular source-code editor developed by Microsoft.
+- **Issue Tracker:** A tool used by software development teams to track tasks, bugs, and feature requests.
+- **Pull Request (PR):** A method of submitting contributions to a project, where the maintainer can review and merge changes.
+- **Reviewer:** A person responsible for reviewing code changes before they are merged into the main codebase.
 - **Ninja:** A build system focused on speed, designed to run builds as efficiently as possible.
 - **CMake:** An open-source, cross-platform family of tools designed to build, test, and package software.
 - **`ccache`:** A compiler cache that speeds up recompilation by caching previous compilations.
@@ -500,10 +596,12 @@ git pull <jun-fork> <branch-name> --rebase
 
 ### Useful Links
 
+- [Ceph Issue Tracker](https://tracker.ceph.com)
+- [Ceph Developer Guide - Basic Workflow](https://docs.ceph.com/en/reef/dev/developer_guide/basic-workflow/)
+- [Submitting Patches to Ceph](https://github.com/ceph/ceph/blob/main/SubmittingPatches.rst)
 - [Git Documentation](https://git-scm.com/doc)
 - [CMake Documentation](https://cmake.org/documentation/)
 - [Ninja Build System](https://ninja-build.org/)
 - [Ceph Documentation](https://docs.ceph.com/en/latest/)
-- [Ceph SubmittingPatches Guide](https://github.com/ceph/ceph/blob/main/SubmittingPatches.rst)
 
 ---
