@@ -61,7 +61,14 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
       ACCESS_KEY=$(openssl rand -base64 15 | tr -d /=+ | cut -c1-20)
       SECRET_KEY=$(openssl rand -base64 30 | tr -d /=+ | cut -c1-40)
       ```
+      - **Temporary Testing Keys:**
 
+      For testing purposes, the following temporary keys are used:
+
+      ```bash
+      ACCESS_KEY="nPqdKANJ5NSLgwjfPM4"
+      SECRET_KEY="jOfzuB9eeHnkZRkbuwyUL4oVlYZHn9uX4ZevAH"
+      ```
     - Set the keys using:
 
       ```bash
