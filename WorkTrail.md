@@ -1,9 +1,14 @@
+Apologies for the omissions in the previous response. Here is the updated `README.md` including all the details, ensuring that the content is fully incorporated and formatted correctly in Markdown.
+
+---
+
 # **Project Documentation for Ceph**
 
 ## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Latest Updates](#latest-updates)
+   - [Latest Updates (11-15-24)](#latest-updates-11-15-24)
    - [Latest Updates (11-8-24)](#latest-updates-11-8-24)
    - [Latest Updates (11-1-24)](#latest-updates-11-1-24)
    - [Latest Issues (10-22-24)](#latest-issues-10-22-24)
@@ -40,6 +45,118 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
 ---
 
 ## Latest Updates
+
+### Latest Updates (11-15-24)
+
+#### **Implementing FLAG_SECURE Option in Ceph Configuration**
+
+- **Summary of the Issue:**
+  - Issue [#54580](https://tracker.ceph.com/issues/54580) in the Ceph tracker proposes adding a `FLAG_SECURE` option to the Ceph configuration. This feature aims to enhance security by allowing administrators to enforce secure communication protocols across various Ceph components.
+
+- **Plan:**
+
+  - **Generate Keys to Test Redaction:**
+
+    - Generate access and secret keys to test if the redaction works.
+
+      ```bash
+      ACCESS_KEY=$(openssl rand -base64 15 | tr -d /=+ | cut -c1-20)
+      SECRET_KEY=$(openssl rand -base64 30 | tr -d /=+ | cut -c1-40)
+      ```
+
+    - Set the keys using:
+
+      ```bash
+      ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
+      ceph config-key set mgr/mgr/dashboard/RGW_API_SECRET_KEY "$SECRET_KEY"
+      ```
+
+    - Check:
+
+      ```bash
+      ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
+      ceph config-key get mgr/mgr/dashboard/RGW_API_SECRET_KEY
+      ```
+
+    - Set in dashboard as well:
+
+      ```bash
+      ceph dashboard set-rgw-api-access-key "$ACCESS_KEY"
+      ceph dashboard set-rgw-api-secret-key "$SECRET_KEY"
+      ```
+
+    - Optionally, set up this as well to expand the tests:
+
+      ```bash
+      radosgw-admin user create \
+          --uid="testuser" \
+          --display-name="Test User" \
+          --access-key="$ACCESS_KEY" \
+          --secret-key="$SECRET_KEY"
+      ```
+
+    - Verify:
+
+      ```bash
+      radosgw-admin user info --uid="testuser"
+      ```
+
+- **Relevant Code Section:**
+
+  - File: `/workspaces/Ceph/src/mon/KVMonitor.cc`
+  - Relevant line:
+
+    ```cpp
+    else if (prefix == "config-key list" ||
+    ```
+
+- **Implementation Steps:**
+
+  - **Define the `--include-secrets` Option:**
+    - Update the command definitions to include the `include-secrets` parameter:
+
+      ```cpp
+      bool include_secrets = false;
+      cmdctx->op->cmd_getval("include-secrets", include_secrets);
+      ```
+
+  - **Implement a Function to Check Sensitive Keys:**
+    - Create a function to determine if a key is sensitive based on the `FLAG_SECRET` flag:
+
+      ```cpp
+      bool is_sensitive_key(const std::string& key) {
+        // Example implementation
+        return key_has_flag(key, FLAG_SECRET);
+      }
+      ```
+
+  - **Modify the Key Listing Logic:**
+    - While looping through the keys in the `config-key list`, check if the key is sensitive:
+
+      ```cpp
+      // Check if the key is sensitive during the loop
+      bool is_sensitive = is_sensitive_key(iter->key());
+
+      if (!include_secrets && is_sensitive) {
+        // Redact sensitive values
+        f->dump_string(iter->key().c_str(), "***********");
+      }
+      ```
+
+  - **Mark Sensitive Keys Appropriately:**
+    - Ensure that sensitive keys are stored with `FLAG_SECRET`.
+
+- **Additional Notes:**
+
+  - The goal is to prevent sensitive information from being displayed when listing configuration keys unless explicitly requested with the `--include-secrets` option.
+  - Testing will involve verifying that sensitive keys are redacted by default and only displayed when the `--include-secrets` flag is used.
+
+#### **Alternative Build Command**
+
+- **Note on Build Process:**
+  - `sudo ninja start` is an alternative to `sudo ninja vstart-base cephfs cython_cephfs cython_rbd mds` for building the necessary components incrementally and efficiently.
+
+---
 
 ### Latest Updates (11-8-24)
 
@@ -88,6 +205,8 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
     - Gaining experience and seeking support when necessary helps in getting it right the first time.
     - A well-crafted PR format facilitates the review process and contributes to efficient collaboration.
 
+---
+
 ### Latest Updates (11-1-24)
 
 #### **Resolving Merge Conflicts**
@@ -105,10 +224,12 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
     - Maintained essential parts of the `HEAD` to ensure the main branch's integrity.
     - Integrated personal work without overwriting important updates from the main branch.
   - **Executed Git Commands:**
+
     ```bash
     git fetch main
     git pull origin main --rebase
     ```
+
   - **Verified Merged Code:**
     - Checked the merged code for consistency and functionality to ensure the merge was successful.
 
@@ -117,6 +238,8 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
 
 - **Reflection:**
   This experience enhanced my understanding of effective conflict resolution strategies in Git. It underscored the importance of carefully managing and integrating changes from multiple sources to maintain code integrity.
+
+---
 
 ### Latest Issues (10-22-24)
 
@@ -202,19 +325,19 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
        |       ::
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1143:1: error: ‘reply’ does not name a type
   1143 | reply:
-       |       ^~~~~
+       | ^~~~~
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1145:10: error: expected constructor, destructor, or type conversion before ‘(’ token
   1145 | getline(ss, rs);
        |          ^~~~
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1146:3: error: ‘mon’ does not name a type
   1146 | mon.reply_command(op, r, rs, rdata, get_last_committed());
-       |       ^~~
+       | ^~~
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1147:3: error: expected unqualified-id before ‘return’
   1147 | return true;
-       |       ^~~~~~
+       | ^~~~~~
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1148:1: error: expected declaration before ‘}’ token
   1148 | }
-       |       ^~~~
+       | ^
   /home/yejordan/ceph/src/mon/MgrMonitor.cc: In member function ‘bool MgrMonitor::preprocess_command(MonOpRequestRef)’:
   /home/yejordan/ceph/src/mon/MgrMonitor.cc:1057:5: warning: control reaches end of non-void function [-Wreturn-type]
   1057 | } else {
@@ -301,15 +424,27 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
 
 ## Pending Tasks
 
+### **Implementing FLAG_SECURE Option**
+
+- **Task Description:**
+  - Implement the `FLAG_SECURE` option in the Ceph configuration to enhance security.
+  - Ensure sensitive keys are appropriately flagged and redacted when necessary.
+
+- **Next Steps:**
+  - Follow the implementation steps outlined in the Latest Updates (11-15-24).
+  - Test the changes thoroughly to verify that sensitive information is protected.
+
 ### **Incremental Builds**
 
 - **Task Description:**
-  Test the functionality of incremental builds, as current attempts do not seem to be effective.
+  - Test the functionality of incremental builds, as current attempts do not seem to be effective.
+
+- **Update:**
+  - Discovered that `sudo ninja start` can be used as an alternative command for building components incrementally and efficiently.
 
 - **Next Steps:**
-  - Investigate the configuration and dependencies to ensure that incremental build settings are correctly applied.
-  - Explore alternative build tools or configurations that better support incremental builds.
-  - Document findings and implement necessary changes to enable efficient incremental builds.
+  - Investigate if `sudo ninja start` resolves the issues with incremental builds.
+  - Document findings and update build instructions accordingly.
 
 ---
 
@@ -350,10 +485,19 @@ cd build
 sudo ninja vstart-base cephfs cython_cephfs cython_rbd mds
 ```
 
+**Alternative Command:**
+
+- As an alternative, you can use the following command to build and start the cluster:
+
+  ```bash
+  sudo ninja start
+  ```
+
 **Notes:**
 
 - `ninja` is a small build system with a focus on speed.
-- The specified targets (`vstart-base`, `cephfs`, `cython_cephfs`, `cython_rbd`) are built incrementally based on changes.
+- The specified targets (`vstart-base`, `cephfs`, `cython_cephfs`, `cython_rbd`, `mds`) are built incrementally based on changes.
+- The `sudo ninja start` command builds and starts the cluster with default components.
 
 ### 4. Set Up the Test Cluster
 
