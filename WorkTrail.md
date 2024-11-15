@@ -65,15 +65,15 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
     - Set the keys using:
 
       ```bash
-      ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
-      ceph config-key set mgr/mgr/dashboard/RGW_API_SECRET_KEY "$SECRET_KEY"
+      sudo ./bin/ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
+      sudo ./bin/ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
       ```
 
     - Check:
 
       ```bash
-      ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
-      ceph config-key get mgr/mgr/dashboard/RGW_API_SECRET_KEY
+      sudo ./bin/ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
+      sudo ./bin/ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
       ```
 
     - Set in dashboard as well:
