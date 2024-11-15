@@ -79,24 +79,24 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
     - Set in dashboard as well:
 
       ```bash
-      ceph dashboard set-rgw-api-access-key "$ACCESS_KEY"
-      ceph dashboard set-rgw-api-secret-key "$SECRET_KEY"
+      sudo ./bin/ceph dashboard set-rgw-api-access-key "$ACCESS_KEY"
+      sudo ./bin/ceph dashboard set-rgw-api-secret-key "$SECRET_KEY"
       ```
 
     - Optionally, set up this as well to expand the tests:
 
       ```bash
-      radosgw-admin user create \
-          --uid="testuser" \
-          --display-name="Test User" \
-          --access-key="$ACCESS_KEY" \
-          --secret-key="$SECRET_KEY"
+      sudo ./bin/radosgw-admin user create \
+      --uid="testuser" \
+      --display-name="Test User" \
+      --access-key="$ACCESS_KEY" \
+      --secret-key="$SECRET_KEY"
       ```
 
     - Verify:
 
       ```bash
-      radosgw-admin user info --uid="testuser"
+      sudo ./bin/radosgw-admin user info --uid="testuser"
       ```
 
 - **Relevant Code Section:**
