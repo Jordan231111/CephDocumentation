@@ -1,5 +1,3 @@
-Apologies for the omissions in the previous response. Here is the updated `README.md` including all the details, ensuring that the content is fully incorporated and formatted correctly in Markdown.
-
 ---
 
 # **Project Documentation for Ceph**
