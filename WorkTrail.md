@@ -66,14 +66,14 @@ Welcome to the project documentation for contributing to Ceph. This guide provid
 
       ```bash
       sudo ./bin/ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
-      sudo ./bin/ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$ACCESS_KEY"
+      sudo ./bin/ceph config-key set mgr/mgr/dashboard/RGW_API_ACCESS_KEY "$SECRET_KEY"
       ```
 
     - Check:
 
       ```bash
       sudo ./bin/ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
-      sudo ./bin/ceph config-key get mgr/mgr/dashboard/RGW_API_ACCESS_KEY
+      sudo ./bin/ceph config-key get mgr/mgr/dashboard/RGW_API_SECRET_KEY
       ```
 
     - Set in dashboard as well:
