@@ -487,15 +487,15 @@ Ensure you are in the build directory before initiating the build process.
 
 ```bash
 cd build
-sudo ninja vstart-base cephfs cython_cephfs cython_rbd mds
+sudo ninja vstart-base cephfs cython_cephfs cython_rbd
 ```
 
 **Alternative Command:**
 
-- As an alternative, you can use the following command to build and start the cluster:
+- As an alternative, you can use the following command if need to build everything and start the cluster:
 
   ```bash
-  sudo ninja start
+  sudo ninja vstart
   ```
 
 **Notes:**
